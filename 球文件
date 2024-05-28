@@ -1,0 +1,47 @@
+#include <iostream>
+#include <conio.h>
+#include <windows.h>
+
+using namespace std;
+
+int main() {
+    const int width = 50;  // 控制台窗口的宽度
+    const int height = 20; // 控制台窗口的高度
+    int x = 0;             // 小球的初始x坐标
+    int y = height / 2;    // 小球的初始y坐标
+    int deltaX = 1;        // 小球在x方向上移动的增量
+    int deltaY = 1;        // 小球在y方向上移动的增量
+    bool moveLeft = true;  // 移动方向标志
+
+    // 设置控制台窗口大小
+    HWND hwnd = GetConsoleWindow();
+    ShowWindow(hwnd, SW_SHOWNORMAL);
+    MoveWindow(hwnd, 100, 100, width, height, TRUE);
+
+    // 循环直到用户按下键盘
+    while (!_kbhit()) {
+        // 清除控制台
+        system("cls");
+
+        // 计算小球的新位置
+        x += deltaX;
+        y += deltaY;
+
+        // 检查小球是否到达窗口边缘并反弹
+        if (x <= 0 || x >= width - 1) {
+            deltaX = -deltaX; // 改变x方向
+        }
+        if (y <= 0 || y >= height - 1) {
+            deltaY = -deltaY; // 改变y方向
+        }
+
+        // 移动控制台光标到小球的位置并打印小球
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), {x, y});
+        cout << "O" << flush; // 使用flush确保立即打印
+
+        // 暂停一段时间，以便看到小球移动的效果
+        Sleep(100);
+    }
+
+    return 0;
+}
